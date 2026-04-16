@@ -104,3 +104,4 @@ if st.button("診断する"):
 
     if score_1 > 2 and score_2 > 2 and score_3 > 2:
         st.write("全体として一定の対応が進んでいます。次はPDCAやインシデント対応体制の深掘りを検討してください。")
+#a
