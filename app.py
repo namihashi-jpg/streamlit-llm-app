@@ -138,10 +138,6 @@ if st.button("診断する"):
         "q43": q43, "q44": q44, "q45": q45, "q46": q46
     }
 
-    total_score = sum(score_map[a] for a in answers.values())
-    max_score = len(answers) * 2
-    score_ratio = round((total_score / max_score) * 100, 1)
-
     score_1 = sum(score_map[answers[f"q{i}"]] for i in range(1, 7))
     score_2 = sum(score_map[answers[f"q{i}"]] for i in range(7, 12))
     score_3 = sum(score_map[answers[f"q{i}"]] for i in range(12, 19))
@@ -318,18 +314,18 @@ if st.button("診断する"):
         "q46": "AI for Securityの検討"
     }
 
-    for key, value in answers.items():
-        if value != "対応済み":
-            unmet_items.append(f"- {question_texts[key]}（{value}）")
+for key, value in answers.items():
+    if value != "対応済み":
+        unmet_items.append(f"- {question_texts[key]}（{value}）")
 
-        if unmet_items:
-        st.write(f"**不足項目数**: {len(unmet_items)} 件")
-        for item in unmet_items[:15]:
-            st.write(item)
-        if len(unmet_items) > 15:
-            st.write(f"ほか {len(unmet_items) - 15} 件あります。")
-    else:
-        st.write("大きな不足は確認されませんでした。")
+if unmet_items:
+    st.write(f"**不足項目数**: {len(unmet_items)} 件")
+    for item in unmet_items[:15]:
+        st.write(item)
+    if len(unmet_items) > 15:
+        st.write(f"ほか {len(unmet_items) - 15} 件あります。")
+else:
+    st.write("大きな不足は確認されませんでした。")
 
     st.subheader("次の一手（提案）")
 
