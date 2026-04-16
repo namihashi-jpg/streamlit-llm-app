@@ -315,19 +315,18 @@ if st.button("診断する"):
         "q46": "AI for Securityの検討"
     }
 
-for key, value in answers.items():
-    if value != "対応済み":
-        unmet_items.append(f"- {question_texts[key]}（{value}）")
+    for key, value in answers.items():
+        if value != "対応済み":
+            unmet_items.append(f"- {question_texts[key]}（{value}）")
 
-if unmet_items:
-    st.write(f"**不足項目数**: {len(unmet_items)} 件")
-    for item in unmet_items[:15]:
-        st.write(item)
-    if len(unmet_items) > 15:
-        st.write(f"ほか {len(unmet_items) - 15} 件あります。")
-else:
-    st.write("大きな不足は確認されませんでした。")
-
+    if unmet_items:
+        st.write(f"**不足項目数**: {len(unmet_items)} 件")
+        for item in unmet_items[:15]:
+            st.write(item)
+        if len(unmet_items) > 15:
+            st.write(f"ほか {len(unmet_items) - 15} 件あります。")
+    else:
+        st.write("大きな不足は確認されませんでした。")
     st.subheader("次の一手（提案）")
 
     if score_1 < 10:
