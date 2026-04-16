@@ -207,6 +207,28 @@ if st.button("診断する"):
     st.write(f"**7. 生成AI拡張チェック** → {evaluate(score_7, 6)}")
 
     st.subheader("優先順位")
+    st.subheader("レポート要約")
+
+    summary_lines = []
+    summary_lines.append(f"会社名：{company_name if company_name else '未入力'}")
+    summary_lines.append(f"業種：{industry}")
+    summary_lines.append(f"企業規模：{company_size}")
+    summary_lines.append(f"入力者：{role}")
+    summary_lines.append(f"SCS自己判定：{star_result}")
+    summary_lines.append(f"総合スコア：{total_score} / {max_score}（達成率 {score_ratio}%）")
+
+    if priority_high:
+        summary_lines.append("優先度高の分野：" + "、".join(priority_high))
+    if priority_medium:
+        summary_lines.append("優先度中の分野：" + "、".join(priority_medium))
+    if not priority_high and not priority_medium:
+        summary_lines.append("全体として大きな不足は見られません。")
+
+    summary_lines.append("この結果は自己診断に基づく参考値であり、正式な認証・評価を示すものではありません。")
+
+    report_text = "\n".join(summary_lines)
+
+    st.text_area("報告用サマリー", report_text, height=220)
 
     priority_high = []
     priority_medium = []
@@ -294,9 +316,12 @@ if st.button("診断する"):
         if value != "対応済み":
             unmet_items.append(f"- {question_texts[key]}（{value}）")
 
-    if unmet_items:
+        if unmet_items:
+        st.write(f"**不足項目数**: {len(unmet_items)} 件")
         for item in unmet_items[:15]:
             st.write(item)
+        if len(unmet_items) > 15:
+            st.write(f"ほか {len(unmet_items) - 15} 件あります。")
     else:
         st.write("大きな不足は確認されませんでした。")
 
