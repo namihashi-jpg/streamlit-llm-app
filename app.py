@@ -27,3 +27,4 @@ if st.button("送信") and prompt:
 # 動作確認用（Secretsの有無だけ表示）
 st.sidebar.write("Secrets:",
                  "✅ あり" if st.secrets.get("OPENAI_API_KEY") else "❌ なし")
+# test
