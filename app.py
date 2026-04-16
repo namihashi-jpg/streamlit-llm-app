@@ -86,6 +86,7 @@ if st.button("診断する"):
     st.write(f"**指示1：方針（リスク認識）** → {evaluate(score_1)}")
     st.write(f"**指示2：体制（組織）** → {evaluate(score_2)}")
     st.write(f"**指示3：資源（予算・人材）** → {evaluate(score_3)}")
+    st.write(f"**指示4：生成AI利用とサイバーセキュリティ対応** → {evaluate(score_4)}")
 
     st.subheader("次の一手（提案）")
 
@@ -106,6 +107,13 @@ if st.button("診断する"):
         st.write("- セキュリティ対策専用の予算項目を設ける")
         st.write("- 必要なスキル・人材像を明確にする")
         st.write("- 外部ベンダーや専門家の活用方針を決める")
+
+    if score_4 <= 2:
+    　　st.write("**指示4への提案**")
+    　　st.write("- 生成AIの利用ルールを整備する")
+    　　st.write("- 機密情報・個人情報・知的財産の入力可否を明文化する")
+    　　st.write("- 生成AI利用に伴うリスク（誤情報、攻撃悪用など）を整理する")
+    　　st.write("- 情報収集や分析など、セキュリティ業務でのAI活用対象を洗い出す")
 
     if score_1 > 2 and score_2 > 2 and score_3 > 2:
         st.write("全体として一定の対応が進んでいます。次はPDCAやインシデント対応体制の深掘りを検討してください。")
