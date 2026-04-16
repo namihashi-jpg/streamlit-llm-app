@@ -51,12 +51,13 @@ if st.button("診断する"):
         "未対応": 0
     }
 
-    scores = [q1, q2, q3, q4, q5, q6, q7, q8, q9]
+    scores = [q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12]
     total_score = sum(score_map[q] for q in scores)
 
     score_1 = sum(score_map[q] for q in [q1, q2, q3])
     score_2 = sum(score_map[q] for q in [q4, q5, q6])
     score_3 = sum(score_map[q] for q in [q7, q8, q9])
+    score_4 = sum(score_map[q] for q in [q10, q11, q12])
 
     def evaluate(score):
         if score <= 2:
