@@ -145,7 +145,8 @@ if st.button("診断する"):
     score_5 = sum(score_map[answers[f"q{i}"]] for i in range(32, 37))
     score_6 = sum(score_map[answers[f"q{i}"]] for i in range(37, 44))
     score_7 = sum(score_map[answers[f"q{i}"]] for i in range(44, 47))
-        total_score = sum(score_map[a] for a in answers.values())
+    
+    total_score = sum(score_map[a] for a in answers.values())
     max_score = len(answers) * 2
     score_ratio = round((total_score / max_score) * 100, 1)
 
