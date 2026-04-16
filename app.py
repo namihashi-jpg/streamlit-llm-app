@@ -209,29 +209,60 @@ if st.button("診断する"):
     st.write(f"**6. インシデント対応** → {evaluate(score_6, 14)}")
     st.write(f"**7. 生成AI拡張チェック** → {evaluate(score_7, 6)}")
 
-    st.subheader("優先順位")
-    st.subheader("レポート要約")
+st.subheader("優先順位")
 
-    summary_lines = []
-    summary_lines.append(f"会社名：{company_name if company_name else '未入力'}")
-    summary_lines.append(f"業種：{industry}")
-    summary_lines.append(f"企業規模：{company_size}")
-    summary_lines.append(f"入力者：{role}")
-    summary_lines.append(f"SCS自己判定：{star_result}")
-    summary_lines.append(f"総合スコア：{total_score} / {max_score}（達成率 {score_ratio}%）")
+priority_high = []
+priority_medium = []
+priority_low = []
 
-    if priority_high:
-        summary_lines.append("優先度高の分野：" + "、".join(priority_high))
-    if priority_medium:
-        summary_lines.append("優先度中の分野：" + "、".join(priority_medium))
-    if not priority_high and not priority_medium:
-        summary_lines.append("全体として大きな不足は見られません。")
+priority_rules = [
+    ("ガバナンスの整備", score_1, 12),
+    ("取引先管理", score_2, 10),
+    ("リスクの特定", score_3, 14),
+    ("対策の実装", score_4, 26),
+    ("検知・監視", score_5, 10),
+    ("インシデント対応", score_6, 14),
+    ("生成AI拡張チェック", score_7, 6),
+]
 
-    summary_lines.append("この結果は自己診断に基づく参考値であり、正式な認証・評価を示すものではありません。")
+for name, score, max_part_score in priority_rules:
+    ratio = score / max_part_score
+    if ratio < 0.5:
+        priority_high.append(name)
+    elif ratio < 0.8:
+        priority_medium.append(name)
+    else:
+        priority_low.append(name)
 
-    report_text = "\n".join(summary_lines)
+if priority_high:
+    st.error("優先度 高： " + " / ".join(priority_high))
+if priority_medium:
+    st.warning("優先度 中： " + " / ".join(priority_medium))
+if priority_low:
+    st.success("優先度 低： " + " / ".join(priority_low))
 
-    st.text_area("報告用サマリー", report_text, height=220)
+st.subheader("レポート要約")
+
+summary_lines = []
+summary_lines.append(f"会社名：{company_name if company_name else '未入力'}")
+summary_lines.append(f"業種：{industry}")
+summary_lines.append(f"企業規模：{company_size}")
+summary_lines.append(f"入力者：{role}")
+summary_lines.append(f"SCS自己判定：{star_result}")
+summary_lines.append(f"総合スコア：{total_score} / {max_score}（達成率 {score_ratio}%）")
+
+if priority_high:
+    summary_lines.append("優先度高の分野：" + "、".join(priority_high))
+if priority_medium:
+    summary_lines.append("優先度中の分野：" + "、".join(priority_medium))
+if not priority_high and not priority_medium:
+    summary_lines.append("全体として大きな不足は見られません。")
+
+summary_lines.append("この結果は自己診断に基づく参考値であり、正式な認証・評価を示すものではありません。")
+
+report_text = "\n".join(summary_lines)
+
+st.text_area("報告用サマリー", report_text, height=220)
 
     priority_high = []
     priority_medium = []
