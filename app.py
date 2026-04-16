@@ -143,6 +143,9 @@ if st.button("診断する"):
     score_5 = sum(score_map[answers[f"q{i}"]] for i in range(32, 37))
     score_6 = sum(score_map[answers[f"q{i}"]] for i in range(37, 44))
     score_7 = sum(score_map[answers[f"q{i}"]] for i in range(44, 47))
+        total_score = sum(score_map[a] for a in answers.values())
+    max_score = len(answers) * 2
+    score_ratio = round((total_score / max_score) * 100, 1)
 
     scs_star3_questions = [f"q{i}" for i in range(1, 27)]
     scs_star4_questions = [f"q{i}" for i in range(1, 44)]
@@ -179,6 +182,10 @@ if st.button("診断する"):
     st.write(f"**業種**: {industry}")
     st.write(f"**企業規模**: {company_size}")
     st.write(f"**入力者**: {role}")
+    st.subheader("総合スコア")
+    st.write(f"**総合スコア**: {total_score} / {max_score}")
+    st.write(f"**達成率**: {score_ratio}%")
+    st.progress(total_score / max_score)
 
     st.subheader("SCS自己判定")
     if "★4" in star_result:
@@ -198,6 +205,38 @@ if st.button("診断する"):
     st.write(f"**5. 検知・監視** → {evaluate(score_5, 10)}")
     st.write(f"**6. インシデント対応** → {evaluate(score_6, 14)}")
     st.write(f"**7. 生成AI拡張チェック** → {evaluate(score_7, 6)}")
+
+    st.subheader("優先順位")
+
+    priority_high = []
+    priority_medium = []
+    priority_low = []
+
+    priority_rules = [
+        ("ガバナンスの整備", score_1, 12),
+        ("取引先管理", score_2, 10),
+        ("リスクの特定", score_3, 14),
+        ("対策の実装", score_4, 26),
+        ("検知・監視", score_5, 10),
+        ("インシデント対応", score_6, 14),
+        ("生成AI拡張チェック", score_7, 6),
+    ]
+
+    for name, score, max_part_score in priority_rules:
+        ratio = score / max_part_score
+        if ratio < 0.5:
+            priority_high.append(name)
+        elif ratio < 0.8:
+            priority_medium.append(name)
+        else:
+            priority_low.append(name)
+
+    if priority_high:
+        st.error("優先度 高： " + " / ".join(priority_high))
+    if priority_medium:
+        st.warning("優先度 中： " + " / ".join(priority_medium))
+    if priority_low:
+        st.success("優先度 低： " + " / ".join(priority_low))
 
     st.subheader("不足がある主な項目")
     unmet_items = []
