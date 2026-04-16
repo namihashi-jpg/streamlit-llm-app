@@ -124,17 +124,23 @@ if st.button("診断する"):
         "一部対応": 1,
         "未対応": 0
     }
-
     answers = {
-        "q1": q1, "q2": q2, "q3": q3, "q4": q4, "q5": q5, "q6": q6,
-        "q7": q7, "q8": q8, "q9": q9, "q10": q10, "q11": q11,
-        "q12": q12, "q13": q13, "q14": q14, "q15": q15, "q16": q16, "q17": q17, "q18": q18,
-        "q19": q19, "q20": q20, "q21": q21, "q22": q22, "q23": q23, "q24": q24, "q25": q25, "q26": q26,
-        "q27": q27, "q28": q28, "q29": q29, "q30": q30, "q31": q31,
-        "q32": q32, "q33": q33, "q34": q34, "q35": q35, "q36": q36,
-        "q37": q37, "q38": q38, "q39": q39, "q40": q40, "q41": q41, "q42": q42, "q43": q43,
-        "q44": q44, "q45": q45, "q46": q46
+        "q1": q1, "q2": q2, "q3": q3, "q4": q4, "q5": q5,
+        "q6": q6, "q7": q7, "q8": q8, "q9": q9, "q10": q10,
+        "q11": q11, "q12": q12, "q13": q13, "q14": q14,
+        "q15": q15, "q16": q16, "q17": q17, "q18": q18,
+        "q19": q19, "q20": q20, "q21": q21, "q22": q22,
+        "q23": q23, "q24": q24, "q25": q25, "q26": q26,
+        "q27": q27, "q28": q28, "q29": q29, "q30": q30,
+        "q31": q31, "q32": q32, "q33": q33, "q34": q34,
+        "q35": q35, "q36": q36, "q37": q37, "q38": q38,
+        "q39": q39, "q40": q40, "q41": q41, "q42": q42,
+        "q43": q43, "q44": q44, "q45": q45, "q46": q46
     }
+
+    total_score = sum(score_map[a] for a in answers.values())
+    max_score = len(answers) * 2
+    score_ratio = round((total_score / max_score) * 100, 1)
 
     score_1 = sum(score_map[answers[f"q{i}"]] for i in range(1, 7))
     score_2 = sum(score_map[answers[f"q{i}"]] for i in range(7, 12))
