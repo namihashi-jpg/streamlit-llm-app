@@ -303,7 +303,44 @@ if st.button("診断する"):
     report_text = "\n".join(summary_lines)
     st.text_area("報告用サマリー", report_text, height=220)
     
-    pdf_file = create_pdf(report_text)
+       next_actions = []
+
+    if score_1 < 10:
+        next_actions.append("・ガバナンスの整備：セキュリティ方針と役割分担を文書化し、経営層への定期報告を開始する")
+    if score_2 < 8:
+        next_actions.append("・取引先管理：重要取引先の洗い出しを行い、契約やチェックシートでセキュリティ要件を明確化する")
+    if score_3 < 10:
+        next_actions.append("・リスクの特定：情報資産台帳を作成し、リスク評価手順と優先順位付けを整備する")
+    if score_4 < 20:
+        next_actions.append("・対策の実装：パッチ適用、バックアップ、アクセス制御、ネットワーク防御を優先的に強化する")
+    if score_5 < 8:
+        next_actions.append("・検知・監視：ログ取得・保管・分析の仕組みを整え、監視結果を初動対応につなげる")
+    if score_6 < 10:
+        next_actions.append("・インシデント対応：対応手順書、連絡先一覧、演習計画を整備し、復旧訓練を行う")
+    if score_7 < 5:
+        next_actions.append("・生成AI拡張チェック：生成AI利用ルールを整備し、機密情報や個人情報の入力可否を明文化する")
+
+    pdf_file = create_pdf(
+        company_name=company_name,
+        industry=industry,
+        company_size=company_size,
+        role=role,
+        star_result=star_result,
+        total_score=total_score,
+        max_score=max_score,
+        score_ratio=score_ratio,
+        priority_high=priority_high,
+        priority_medium=priority_medium,
+        unmet_items=unmet_items,
+        next_actions=next_actions
+    )
+
+    st.download_button(
+        label="📄 PDFダウンロード",
+        data=pdf_file,
+        file_name="セキュリティ診断レポート.pdf",
+        mime="application/pdf"
+    )
 
     st.download_button(
         label="📄 PDFダウンロード",
