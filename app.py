@@ -4,6 +4,19 @@ from reportlab.lib.styles import getSampleStyleSheet
 from io import BytesIO
 
 st.set_page_config(page_title="企業向けサイバー対応セルフチェック", layout="wide")
+def create_pdf(report_text):
+    buffer = BytesIO()
+    doc = SimpleDocTemplate(buffer)
+    styles = getSampleStyleSheet()
+    story = []
+
+    for line in report_text.split("\n"):
+        story.append(Paragraph(line, styles["Normal"]))
+        story.append(Spacer(1, 8))
+
+    doc.build(story)
+    buffer.seek(0)
+    return buffer
 
 st.title("企業向けサイバー対応セルフチェック")
 st.write("担当者が事前に入力し、自社の対応状況やSCS評価制度における現時点の到達見込みを確認するための自己診断アプリです。")
