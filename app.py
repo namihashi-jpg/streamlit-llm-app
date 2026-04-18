@@ -303,7 +303,7 @@ if st.button("診断する"):
     report_text = "\n".join(summary_lines)
     st.text_area("報告用サマリー", report_text, height=220)
     
-       next_actions = []
+        next_actions = []
 
     if score_1 < 10:
         next_actions.append("・ガバナンスの整備：セキュリティ方針と役割分担を文書化し、経営層への定期報告を開始する")
