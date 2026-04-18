@@ -319,7 +319,9 @@ if st.button("診断する"):
         next_actions.append("・インシデント対応：対応手順書、連絡先一覧、演習計画を整備し、復旧訓練を行う")
     if score_7 < 5:
         next_actions.append("・生成AI拡張チェック：生成AI利用ルールを整備し、機密情報や個人情報の入力可否を明文化する")
-
+        
+    unmet_items = []
+    
     pdf_file = create_pdf(
         company_name=company_name,
         industry=industry,
@@ -343,7 +345,7 @@ if st.button("診断する"):
     )
     
     st.subheader("不足がある主な項目")
-    unmet_items = []
+
 
     question_texts = {
         "q1": "法令等を踏まえた社内ルールの策定・周知",
