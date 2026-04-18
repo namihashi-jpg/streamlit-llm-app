@@ -277,7 +277,16 @@ if st.button("診断する"):
 
     report_text = "\n".join(summary_lines)
     st.text_area("報告用サマリー", report_text, height=220)
+    
+    pdf_file = create_pdf(report_text)
 
+    st.download_button(
+        label="📄 PDFダウンロード",
+        data=pdf_file,
+        file_name="セキュリティ診断レポート.pdf",
+        mime="application/pdf"
+    )
+    
     st.subheader("不足がある主な項目")
     unmet_items = []
 
