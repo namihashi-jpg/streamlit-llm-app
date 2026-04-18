@@ -1,4 +1,7 @@
 import streamlit as st
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
+from reportlab.lib.styles import getSampleStyleSheet
+from io import BytesIO
 
 st.set_page_config(page_title="企業向けサイバー対応セルフチェック", layout="wide")
 
