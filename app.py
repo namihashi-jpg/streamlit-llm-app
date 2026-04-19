@@ -351,22 +351,109 @@ if st.button("診断する"):
     if score_7 < 5:
         next_actions.append("・生成AIルールの整備")
 
-    # 🔥 ここで初めてPDF作る
-    pdf_file = create_pdf(
-        company_name=company_name,
-        industry=industry,
-        company_size=company_size,
-        role=role,
-        star_result=star_result,
-        total_score=total_score,
-        max_score=max_score,
-        score_ratio=score_ratio,
-        priority_high=priority_high,
-        priority_medium=priority_medium,
-        unmet_items=unmet_items,
-        next_actions=next_actions
+def create_pdf(
+    company_name,
+    industry,
+    company_size,
+    role,
+    star_result,
+    total_score,
+    max_score,
+    score_ratio,
+    priority_high,
+    priority_medium,
+    unmet_items,
+    next_actions
+):
+    buffer = BytesIO()
+
+    pdfmetrics.registerFont(TTFont("JPFont", "fonts/ipaexg.ttf"))
+
+    doc = SimpleDocTemplate(buffer, pagesize=A4)
+    styles = getSampleStyleSheet()
+
+    title_style = ParagraphStyle(
+        "TitleJP",
+        parent=styles["Heading1"],
+        fontName="JPFont",
+        fontSize=16,
+        leading=22,
+        alignment=TA_LEFT,
+        spaceAfter=12
     )
 
+    heading_style = ParagraphStyle(
+        "HeadingJP",
+        parent=styles["Heading2"],
+        fontName="JPFont",
+        fontSize=12,
+        leading=16,
+        alignment=TA_LEFT,
+        spaceAfter=8
+    )
+
+    body_style = ParagraphStyle(
+        "BodyJP",
+        parent=styles["Normal"],
+        fontName="JPFont",
+        fontSize=10,
+        leading=14,
+        alignment=TA_LEFT,
+        spaceAfter=4
+    )
+
+    story = []
+
+    story.append(Paragraph("企業向けサイバー対応セルフチェック 報告書", title_style))
+    story.append(Paragraph(f"作成日：{datetime.now().strftime('%Y-%m-%d %H:%M')}", body_style))
+    story.append(Spacer(1, 12))
+
+    story.append(Paragraph("1. 基本情報", heading_style))
+    story.append(Paragraph(f"会社名：{company_name if company_name else '未入力'}", body_style))
+    story.append(Paragraph(f"業種：{industry}", body_style))
+    story.append(Paragraph(f"企業規模：{company_size}", body_style))
+    story.append(Paragraph(f"入力者：{role}", body_style))
+    story.append(Spacer(1, 10))
+
+    story.append(Paragraph("2. 診断結果", heading_style))
+    story.append(Paragraph(f"SCS自己判定：{star_result}", body_style))
+    story.append(Paragraph(f"総合スコア：{total_score} / {max_score}", body_style))
+    story.append(Paragraph(f"達成率：{score_ratio}%", body_style))
+    story.append(Spacer(1, 10))
+
+    story.append(Paragraph("3. 優先順位", heading_style))
+    if priority_high:
+        story.append(Paragraph("優先度 高：" + "、".join(priority_high), body_style))
+    if priority_medium:
+        story.append(Paragraph("優先度 中：" + "、".join(priority_medium), body_style))
+    if not priority_high and not priority_medium:
+        story.append(Paragraph("全体として大きな不足は見られません。", body_style))
+    story.append(Spacer(1, 10))
+
+    story.append(Paragraph("4. 主な不足項目", heading_style))
+    if unmet_items:
+        story.append(Paragraph(f"不足項目数：{len(unmet_items)} 件", body_style))
+        for item in unmet_items[:10]:
+            story.append(Paragraph(item, body_style))
+    else:
+        story.append(Paragraph("大きな不足は確認されませんでした。", body_style))
+    story.append(Spacer(1, 10))
+
+    story.append(Paragraph("5. 次の一手", heading_style))
+    if next_actions:
+        for action in next_actions:
+            story.append(Paragraph(action, body_style))
+    else:
+        story.append(Paragraph("現時点で優先的な追加対応は少ない状態です。", body_style))
+    story.append(Spacer(1, 12))
+
+    story.append(Paragraph("6. 注意事項", heading_style))
+    story.append(Paragraph("本結果は自己診断に基づく参考値であり、正式な認証・評価を示すものではありません。", body_style))
+
+    doc.build(story)
+    buffer.seek(0)
+    return buffer
+    
     st.download_button(
         label="📄 PDFダウンロード",
         data=pdf_file,
