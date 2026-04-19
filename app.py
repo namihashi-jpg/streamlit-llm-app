@@ -320,8 +320,38 @@ if st.button("診断する"):
     if score_7 < 5:
         next_actions.append("・生成AI拡張チェック：生成AI利用ルールを整備し、機密情報や個人情報の入力可否を明文化する")
         
+    st.subheader("不足がある主な項目")
     unmet_items = []
-    
+
+    question_texts = {
+        "q1": "ガバナンス体制の整備",
+        "q2": "責任と権限の明確化",
+        # 必要に応じて続き
+    }
+
+    for key, value in answers.items():
+        if value != "対応済み":
+            unmet_items.append(f"- {question_texts.get(key, key)}（{value}）")
+
+    # 次の一手
+    next_actions = []
+
+    if score_1 < 10:
+        next_actions.append("・ガバナンスの整備を優先")
+    if score_2 < 8:
+        next_actions.append("・取引先管理の見直し")
+    if score_3 < 10:
+        next_actions.append("・リスク特定の強化")
+    if score_4 < 20:
+        next_actions.append("・対策の実装を強化")
+    if score_5 < 8:
+        next_actions.append("・監視体制の整備")
+    if score_6 < 10:
+        next_actions.append("・インシデント対応の整備")
+    if score_7 < 5:
+        next_actions.append("・生成AIルールの整備")
+
+    # 🔥 ここで初めてPDF作る
     pdf_file = create_pdf(
         company_name=company_name,
         industry=industry,
@@ -343,10 +373,6 @@ if st.button("診断する"):
         file_name="セキュリティ診断レポート.pdf",
         mime="application/pdf"
     )
-    
-    st.subheader("不足がある主な項目")
-
-
     question_texts = {
         "q1": "法令等を踏まえた社内ルールの策定・周知",
         "q2": "責任と権限の明確化",
