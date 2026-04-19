@@ -18,7 +18,7 @@ from io import BytesIO
 st.set_page_config(page_title="企業向けサイバー対応セルフチェック", layout="wide")
 
     # 日本語フォント登録
-    pdfmetrics.registerFont(UnicodeCIDFont('HeiseiMin-W3'))
+pdfmetrics.registerFont(UnicodeCIDFont('HeiseiMin-W3'))
 
     doc = SimpleDocTemplate(buffer)
     styles = getSampleStyleSheet()
