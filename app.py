@@ -16,8 +16,6 @@ from reportlab.lib.styles import getSampleStyleSheet
 from io import BytesIO
 
 st.set_page_config(page_title="企業向けサイバー対応セルフチェック", layout="wide")
-def create_pdf(report_text):
-    buffer = BytesIO()
 
     # 日本語フォント登録
     pdfmetrics.registerFont(UnicodeCIDFont('HeiseiMin-W3'))
@@ -30,10 +28,6 @@ def create_pdf(report_text):
     for line in report_text.split("\n"):
         story.append(Paragraph(f'<font name="HeiseiMin-W3">{line}</font>', styles["Normal"]))
         story.append(Spacer(1, 10))
-
-    doc.build(story)
-    buffer.seek(0)
-    return buffer
 
     for line in report_text.split("\n"):
         story.append(Paragraph(line, styles["Normal"]))
