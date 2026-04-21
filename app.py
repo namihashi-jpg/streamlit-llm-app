@@ -1,3 +1,4 @@
+import os
 import streamlit as st
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
@@ -27,7 +28,11 @@ def create_pdf(
 ):
     buffer = BytesIO()
 
-    pdfmetrics.registerFont(TTFont("JPFont", "fonts/ipaexg.ttf"))
+        font_path = "fonts/ipaexg.ttf"
+    if not os.path.exists(font_path):
+        raise FileNotFoundError("fonts/ipaexg.ttf が見つかりません。fonts フォルダに日本語フォントを置いてください。")
+
+    pdfmetrics.registerFont(TTFont("JPFont", font_path))
 
     doc = SimpleDocTemplate(buffer, pagesize=A4)
     styles = getSampleStyleSheet()
@@ -429,24 +434,26 @@ if st.button("診断する"):
     for action in next_actions:
         st.write(action)
 
-    pdf_file = create_pdf(
-        company_name=company_name,
-        industry=industry,
-        company_size=company_size,
-        role=role,
-        star_result=star_result,
-        total_score=total_score,
-        max_score=max_score,
-        score_ratio=score_ratio,
-        priority_high=priority_high,
-        priority_medium=priority_medium,
-        unmet_items=unmet_items,
-        next_actions=next_actions
-    )
+        pdf_file = create_pdf(
+            company_name=company_name,
+            industry=industry,
+            company_size=company_size,
+            role=role,
+            star_result=star_result,
+            total_score=total_score,
+            max_score=max_score,
+            score_ratio=score_ratio,
+            priority_high=priority_high,
+            priority_medium=priority_medium,
+            unmet_items=unmet_items,
+            next_actions=next_actions
+        )
 
-    st.download_button(
-        label="📄 PDFダウンロード",
-        data=pdf_file,
-        file_name="セキュリティ診断レポート.pdf",
-        mime="application/pdf"
-    )
+        st.download_button(
+            label="📄 PDFダウンロード",
+            data=pdf_file,
+            file_name="セキュリティ診断レポート.pdf",
+            mime="application/pdf"
+        )
+    except Exception as e:
+        st.warning(f"PDF出力は現在使えません: {e}")
