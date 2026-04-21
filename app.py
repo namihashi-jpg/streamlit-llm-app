@@ -434,6 +434,7 @@ if st.button("診断する"):
     for action in next_actions:
         st.write(action)
 
+    try:
         pdf_file = create_pdf(
             company_name=company_name,
             industry=industry,
