@@ -28,7 +28,7 @@ def create_pdf(
 ):
     buffer = BytesIO()
 
-        font_path = "fonts/ipaexg.ttf"
+    font_path = "fonts/ipaexg.ttf"
     if not os.path.exists(font_path):
         raise FileNotFoundError("fonts/ipaexg.ttf が見つかりません。fonts フォルダに日本語フォントを置いてください。")
 
